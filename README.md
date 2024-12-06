@@ -5,7 +5,7 @@
 ![Framework](https://img.shields.io/badge/Framework-Django-green?style=flat-square&logo=django)
 
 ## Descrição do Projeto
-Sistema backend robusto para gerenciamento de dados financeiros de clientes, com funcionalidades completas de CRUD, geração de relatórios e análises gráficas.
+Sistema backend para gerenciamento de dados financeiros de clientes, com funcionalidades completas de CRUD, geração de relatórios e análises gráficas.
 
 ## Funcionalidades
 - CRUD completo de Clientes
