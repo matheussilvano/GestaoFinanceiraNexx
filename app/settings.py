@@ -9,3 +9,14 @@ INSTALLED_APPS = [
     'transacoes',
     'relatorios',
 ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'financas',
+        'USER': 'postgres',
+        'PASSWORD': 'senha',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
