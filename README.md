@@ -65,9 +65,8 @@ docker-compose exec web pytest
 Acesse a documentação Swagger em: `http://localhost:8000/swagger/`
 
 ## Estrutura do Projeto
-```
-financas-backend/
-│
+```bash
+GestaoFinanceiraNexx/
 ├── app/
 │   ├── __init__.py
 │   ├── settings.py
@@ -132,10 +131,7 @@ financas-backend/
     - `transacoes/models.py`
 
 ### Testes Automatizados
-- [x] Implementado
-  - Arquivos:
-    - `tests/test_clientes.py`
-    - `tests/test_transacoes.py`
+- [ ] Não Implementado
 
 ### Documentação
 - [x] Presente
