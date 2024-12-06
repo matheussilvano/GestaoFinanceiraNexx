@@ -99,3 +99,46 @@ financas-backend/
 ├── requirements.txt
 └── README.md
 ```
+
+## Andamento do projeto
+# Sistema de Gestão de Transações Financeiras
+
+## Implementação das Funcionalidades
+
+### CRUD de Clientes
+- [x] Implementado
+  - Arquivos:
+    - `clientes/models.py`
+    - `clientes/views.py`
+    - `app/urls.py`
+
+### Cadastro de Transações
+- [x] Implementado
+  - Arquivos:
+    - `transacoes/models.py`
+    - `transacoes/views.py`
+    - `app/urls.py`
+
+### Relatórios
+- [x] Relatório Geral Implementado
+  - Arquivos:
+    - `reports/views.py`
+- [ ] Gráficos Pendente
+
+### Validações e Regras
+- [x] Implementado
+  - Arquivos:
+    - `clientes/models.py`
+    - `transacoes/models.py`
+
+### Testes Automatizados
+- [x] Implementado
+  - Arquivos:
+    - `tests/test_clientes.py`
+    - `tests/test_transacoes.py`
+
+### Documentação
+- [x] Presente
+  - Arquivos:
+    - `README.md`
+
