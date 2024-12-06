@@ -142,3 +142,9 @@ financas-backend/
   - Arquivos:
     - `README.md`
 
+## Próximos Passos
+- [ ] Adicionar autenticação
+- [ ] Criar mais testes para ampliar cobertura e complexidade
+- [ ] Implementar relatórios pendentes
+- [ ] Adicionar validações mais complexas
+
