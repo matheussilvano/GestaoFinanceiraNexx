@@ -3,6 +3,8 @@ import os
 DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 SECRET_KEY = 'django-insecure-n3)4)451_s#4v8qh_l8^g4$lc6_c83q!z8_m9=&_rgv_k_7+cl'
+USE_TZ = True
+TIME_ZONE = 'America/Sao_Paulo'
 
 # Aplicações instaladas
 INSTALLED_APPS = [
@@ -18,6 +20,7 @@ INSTALLED_APPS = [
     'transacoes',
     'relatorios',
     'django_filters',
+    'django_extensions'
 ]
 
 # Configuração de Middleware
