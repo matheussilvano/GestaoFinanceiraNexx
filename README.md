@@ -28,41 +28,92 @@ Sistema backend para gerenciamento de dados financeiros de clientes, com funcion
 - Docker
 - Docker Compose
 
-## Configuração do Ambiente
+# Sistema de Gestão de Transações Financeiras
 
-### Clonar o Repositório
+Sistema backend desenvolvido em Django para gerenciar e consultar dados financeiros de clientes, incluindo transações, relatórios e análises gráficas.
+
+## Pré-requisitos
+
+- Docker
+- Docker Compose
+- Git
+
+## Instalação
+
+1. Clone o repositório:
 ```bash
-git clone https://github.seu-usuario/financas-backend.git
-cd financas-backend
+git clone [URL_DO_SEU_REPOSITORIO]
+cd GestaoFinanceiraNexx
 ```
 
-### Configurar Ambiente de Desenvolvimento
+3. Execute o projeto:
 ```bash
-# Criar ambiente virtual
-python -m venv venv
-source venv/bin/activate  # No Windows use: venv\Scripts\activate
-
-# Instalar dependências
-pip install -r requirements.txt
-```
-
-### Iniciar Ambiente com Docker
-```bash
+# Construir e iniciar os containers
 docker-compose up --build
+
+# Ou para rodar em segundo plano
+docker-compose up -d
 ```
 
-### Executar Migrações
+4. Execute as migrações do banco de dados:
 ```bash
 docker-compose exec web python manage.py migrate
 ```
 
-### Executar Testes
+5. Crie um superusuário:
 ```bash
-docker-compose exec web pytest
+docker-compose exec web python manage.py createsuperuser
 ```
 
-## Documentação da API
-Acesse a documentação Swagger em: `http://localhost:8000/swagger/`
+## Uso
+
+Após a instalação, você pode acessar:
+
+- API: http://localhost:8000/api/
+- Admin: http://localhost:8000/admin/
+- Documentação da API: http://localhost:8000/swagger/
+
+### Endpoints Principais
+
+- `/api/clientes/`: CRUD de clientes
+- `/api/transacoes/`: CRUD de transações
+- `/api/transacoes/relatorio_geral/`: Relatório geral de transações
+- `/api/transacoes/evolucao_receitas_despesas/`: Evolução de receitas e despesas
+
+## Testes
+
+Para executar os testes:
+
+```bash
+# Todos os testes
+docker-compose exec web python manage.py test
+
+# Testes específicos
+docker-compose exec web python manage.py test clientes.tests
+docker-compose exec web python manage.py test transacoes.tests
+docker-compose exec web python manage.py test relatorios.tests
+
+# Cobertura de testes
+docker-compose exec web coverage run --source='.' manage.py test
+docker-compose exec web coverage report
+```
+
+## Comandos Úteis
+
+```bash
+# Parar os containers
+docker-compose down
+
+# Ver logs
+docker-compose logs -f
+
+# Acessar o shell do Django
+docker-compose exec web python manage.py shell
+
+# Criar novas migrações
+docker-compose exec web python manage.py makemigrations
+```
+
 
 ## Estrutura do Projeto
 ```bash
