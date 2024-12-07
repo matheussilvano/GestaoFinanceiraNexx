@@ -188,7 +188,7 @@ GestaoFinanceiraNexx/
     - `clientes/tests.py`: Testes de CRUD e validações
     - `transacoes/tests.py`: Testes de transações e relatórios
     - `relatorios/tests.py`: Testes específicos de relatórios
-  - ![Cobertura](https://img.shields.io/badge/coverage-88%25-brightgreen?style=flat-square&logo=pytest)
+  ![Cobertura atual](https://img.shields.io/badge/coverage-88%25-brightgreen?style=flat-square&logo=pytest)
 ### Documentação
 - [x] Presente
   - `README.md`: Instruções de instalação e uso
