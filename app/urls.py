@@ -7,6 +7,7 @@ from drf_yasg import openapi
 from django.views.generic import RedirectView
 from clientes.views import ClienteViewSet
 from transacoes.views import TransacaoViewSet
+from relatorios.views import RelatorioViewSet
 
 # Configuração do Swagger/OpenAPI
 schema_view = get_schema_view(
@@ -22,6 +23,7 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register(r'clientes', ClienteViewSet)
 router.register(r'transacoes', TransacaoViewSet)
+router.register(r'relatorios', RelatorioViewSet, basename='relatorio')
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/api/', permanent=False)),
