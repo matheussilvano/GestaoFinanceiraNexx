@@ -150,48 +150,57 @@ GestaoFinanceiraNexx/
 └── README.md
 ```
 
-## Andamento do projeto
-# Sistema de Gestão de Transações Financeiras
-
+# Andamento do projeto
 ## Implementação das Funcionalidades
-
 ### CRUD de Clientes
 - [x] Implementado
   - Arquivos:
-    - `clientes/models.py`
-    - `clientes/views.py`
-    - `app/urls.py`
-
+    - `clientes/models.py`: Modelo com validações de CPF e campos obrigatórios
+    - `clientes/views.py`: ViewSet com operações CRUD e validações de negócio
+    - `clientes/serializers.py`: Serialização e validação de dados
+    - `app/urls.py`: Configuração de rotas
 ### Cadastro de Transações
 - [x] Implementado
   - Arquivos:
-    - `transacoes/models.py`
-    - `transacoes/views.py`
-    - `app/urls.py`
-
+    - `transacoes/models.py`: Modelo com validações de valor e categorias
+    - `transacoes/views.py`: ViewSet com operações CRUD e relatórios
+    - `transacoes/serializers.py`: Serialização e validação de transações
+    - `app/urls.py`: Configuração de rotas
 ### Relatórios
 - [x] Relatório Geral Implementado
-  - Arquivos:
-    - `reports/views.py`
-- [ ] Gráficos Pendente
-
+  - `transacoes/views.py`: Endpoints para relatórios
+    - Saldo total por cliente
+    - Resumo por categoria
+    - Evolução temporal de receitas/despesas
+- [x] Gráficos Implementados
+  - Endpoint para evolução de receitas vs. despesas
+  - Suporte a agrupamento por dia/mês
+  - Filtros por período e cliente
 ### Validações e Regras
 - [x] Implementado
-  - Arquivos:
-    - `clientes/models.py`
-    - `transacoes/models.py`
-
+  - CPF único e formato válido
+  - Validação de valores de transação
+  - Proteção contra exclusão de clientes com transações
+  - Categorização de transações
 ### Testes Automatizados
-- [ ] Não Implementado
-
+- [x] Implementado
+  - Arquivos:
+    - `clientes/tests.py`: Testes de CRUD e validações
+    - `transacoes/tests.py`: Testes de transações e relatórios
+    - `relatorios/tests.py`: Testes específicos de relatórios
+  - ![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen?style=flat-square&logo=pytest)
 ### Documentação
 - [x] Presente
-  - Arquivos:
-    - `README.md`
-
+  - `README.md`: Instruções de instalação e uso
+  - `.env.example`: Configurações de ambiente
+  - Swagger/OpenAPI: Documentação interativa da API
 ## Próximos Passos
-- [ ] Adicionar autenticação
-- [ ] Criar mais testes para ampliar cobertura e complexidade
-- [ ] Implementar relatórios pendentes
-- [ ] Adicionar validações mais complexas
+- [ ] Implementar autenticação JWT
+- [ ] Adicionar cache para otimizar relatórios
+- [ ] Expandir testes para atingir 100% de cobertura
+- [ ] Implementar filtros avançados nas listagens
+- [ ] Adicionar exportação de relatórios em PDF/Excel
+- [ ] Implementar histórico de alterações (audit trail)
+- [ ] Adicionar validações específicas por tipo de transação
+- [ ] Melhorar performance com indexação e otimizações
 
