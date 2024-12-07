@@ -46,7 +46,7 @@ git clone [URL_DO_SEU_REPOSITORIO]
 cd GestaoFinanceiraNexx
 ```
 
-3. Execute o projeto:
+2. Execute o projeto:
 ```bash
 # Construir e iniciar os containers
 docker-compose up --build
@@ -55,12 +55,12 @@ docker-compose up --build
 docker-compose up -d
 ```
 
-4. Execute as migrações do banco de dados:
+3. Execute as migrações do banco de dados:
 ```bash
 docker-compose exec web python manage.py migrate
 ```
 
-5. Crie um superusuário:
+4. Crie um superusuário:
 ```bash
 docker-compose exec web python manage.py createsuperuser
 ```
