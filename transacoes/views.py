@@ -8,21 +8,16 @@ from django.db.models import F, Q
 from datetime import datetime
 from .models import Transacao
 from .serializers import TransacaoSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page 
 
 class TransacaoViewSet(viewsets.ModelViewSet):
     queryset = Transacao.objects.all()
     serializer_class = TransacaoSerializer
-    
+
+    @method_decorator(cache_page(60 * 15))
     @action(detail=False, methods=['get'])
     def evolucao_financeira(self, request):
-        """
-        Retorna dados para gráfico de evolução de receitas vs despesas.
-        Parâmetros:
-            - cliente_cpf: CPF do cliente (opcional)
-            - data_inicio: Data inicial (YYYY-MM-DD)
-            - data_fim: Data final (YYYY-MM-DD)
-            - agrupamento: 'dia' ou 'mes' (default: 'mes')
-        """
         # Pega parâmetros da query
         cpf = request.query_params.get('cliente_cpf')
         data_inicio = request.query_params.get('data_inicio')
@@ -71,6 +66,7 @@ class TransacaoViewSet(viewsets.ModelViewSet):
             }
         })
     
+    @method_decorator(cache_page(60 * 15))
     @action(detail=False, methods=['get'])
     def relatorio_geral(self, request):
         """
