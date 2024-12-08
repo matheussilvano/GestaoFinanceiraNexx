@@ -253,7 +253,7 @@ curl http://localhost:8000/api/clientes/?cpf=12345678901
 
 3. Criar transações:
 ```bash
-# Criar Receita
+# Criar Receita (Positivo)
 curl -X POST http://localhost:8000/api/transacoes/ \
   -H "Content-Type: application/json" \
   -d '{
@@ -265,7 +265,7 @@ curl -X POST http://localhost:8000/api/transacoes/ \
     "categoria": "outros"
   }'
 
-# Criar Despesa
+# Criar Despesa (Negativo)
 curl -X POST http://localhost:8000/api/transacoes/ \
   -H "Content-Type: application/json" \
   -d '{
