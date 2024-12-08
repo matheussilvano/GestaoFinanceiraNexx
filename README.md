@@ -44,7 +44,6 @@ Sistema backend desenvolvido em Django para gerenciar e consultar dados financei
 
 1. Clone o repositório:
 ```bash
-```bash
 git clone https://github.com/matheussilvano/GestaoFinanceiraNexx/
 cd GestaoFinanceiraNexx
 ```
