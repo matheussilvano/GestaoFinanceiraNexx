@@ -1,64 +1,104 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Sum, F
+from django.db.models import Sum
 from django.db.models.functions import TruncDate, TruncMonth
+from django.utils import timezone
+from django.db.models import F, Q
+from datetime import datetime
 from .models import Transacao
 from .serializers import TransacaoSerializer
 
 class TransacaoViewSet(viewsets.ModelViewSet):
     queryset = Transacao.objects.all()
     serializer_class = TransacaoSerializer
-    filterset_fields = ['cliente', 'categoria', 'tipo']
+    
+    @action(detail=False, methods=['get'])
+    def evolucao_financeira(self, request):
+        """
+        Retorna dados para gráfico de evolução de receitas vs despesas.
+        Parâmetros:
+            - cliente_cpf: CPF do cliente (opcional)
+            - data_inicio: Data inicial (YYYY-MM-DD)
+            - data_fim: Data final (YYYY-MM-DD)
+            - agrupamento: 'dia' ou 'mes' (default: 'mes')
+        """
+        # Pega parâmetros da query
+        cpf = request.query_params.get('cliente_cpf')
+        data_inicio = request.query_params.get('data_inicio')
+        data_fim = request.query_params.get('data_fim')
+        agrupamento = request.query_params.get('agrupamento', 'mes')
+
+        # Base query
+        queryset = self.get_queryset()
+
+        # Aplica filtros
+        if cpf:
+            queryset = queryset.filter(cliente__cpf=cpf)
+        if data_inicio:
+            queryset = queryset.filter(data_hora__gte=data_inicio)
+        if data_fim:
+            queryset = queryset.filter(data_hora__lte=data_fim)
+
+        # Define função de truncamento baseado no agrupamento
+        trunc_func = TruncMonth if agrupamento == 'mes' else TruncDate
+
+        # Agrupa e calcula valores
+        evolucao = queryset.annotate(
+            periodo=trunc_func('data_hora')
+        ).values('periodo').annotate(
+            receitas=Sum('valor', filter=Q(tipo='receita')),
+            despesas=Sum('valor', filter=Q(tipo='despesa')),
+        ).order_by('periodo')
+
+        # Formata resposta
+        dados = []
+        for entry in evolucao:
+            dados.append({
+                'periodo': entry['periodo'].strftime('%Y-%m-%d'),
+                'receitas': float(entry['receitas'] or 0),
+                'despesas': abs(float(entry['despesas'] or 0)),  # Converte para positivo para visualização
+                'saldo': float((entry['receitas'] or 0) + (entry['despesas'] or 0))
+            })
+
+        return Response({
+            'dados': dados,
+            'filtros_aplicados': {
+                'cliente_cpf': cpf,
+                'data_inicio': data_inicio,
+                'data_fim': data_fim,
+                'agrupamento': agrupamento
+            }
+        })
     
     @action(detail=False, methods=['get'])
     def relatorio_geral(self, request):
+        """
+        Retorna o relatório geral com saldo total, receitas e despesas agregados por cliente.
+        """
         cliente_id = request.query_params.get('cliente_id')
         queryset = self.get_queryset()
         
         if cliente_id:
             queryset = queryset.filter(cliente_id=cliente_id)
             
+        # Calcula resumo geral
         resumo = queryset.aggregate(
             saldo_total=Sum('valor'),
-            total_receitas=Sum('valor', filter=F('tipo')=='receita'),
-            total_despesas=Sum('valor', filter=F('tipo')=='despesa')
+            total_receitas=Sum('valor', filter=Q(tipo='receita')),
+            total_despesas=Sum('valor', filter=Q(tipo='despesa'))
         )
         
-        # Resumo por categoria
+        # Agrupa por categoria
         categorias = queryset.values('categoria').annotate(
             total=Sum('valor')
         ).order_by('categoria')
         
         return Response({
-            'resumo': resumo,
-            'categorias': categorias
+            'resumo': {
+                'saldo_total': float(resumo['saldo_total'] or 0),
+                'total_receitas': float(resumo['total_receitas'] or 0),
+                'total_despesas': float(resumo['total_despesas'] or 0)
+            },
+            'categorias': list(categorias)
         })
-    
-    @action(detail=False, methods=['get'])
-    def evolucao_receitas_despesas(self, request):
-        data_inicio = request.query_params.get('data_inicio')
-        data_fim = request.query_params.get('data_fim')
-        cliente_id = request.query_params.get('cliente_id')
-        agrupamento = request.query_params.get('agrupamento', 'dia')
-        
-        queryset = self.get_queryset()
-        
-        if cliente_id:
-            queryset = queryset.filter(cliente_id=cliente_id)
-        if data_inicio:
-            queryset = queryset.filter(data_hora__gte=data_inicio)
-        if data_fim:
-            queryset = queryset.filter(data_hora__lte=data_fim)
-            
-        # Agrupa por dia ou mês
-        trunc_func = TruncDate if agrupamento == 'dia' else TruncMonth
-        
-        evolucao = queryset.annotate(
-            data=trunc_func('data_hora')
-        ).values('data').annotate(
-            receitas=Sum('valor', filter=F('tipo')=='receita'),
-            despesas=Sum('valor', filter=F('tipo')=='despesa')
-        ).order_by('data')
-        
-        return Response(evolucao)
