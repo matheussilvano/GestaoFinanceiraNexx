@@ -10,9 +10,7 @@ class RelatorioViewSet(ViewSet):
     @method_decorator(cache_page(60 * 15))  # Cache por 15 minutos
     @action(detail=False, methods=['get'])
     def geral(self, request):
-        """
-        Retorna o relatório geral com saldo total, receitas e despesas
-        """
+        # Retorna o relatório geral com saldo total, receitas e despesas
         cliente_id = request.query_params.get('cliente_id')
         resultado = RelatorioService.get_relatorio_geral(cliente_id)
         return Response(resultado)
@@ -20,9 +18,7 @@ class RelatorioViewSet(ViewSet):
     @method_decorator(cache_page(60 * 15))  # Cache por 15 minutos
     @action(detail=False, methods=['get'])
     def evolucao(self, request):
-        """
-        Retorna a evolução de receitas e despesas ao longo do tempo
-        """
+        # Retorna a evolução de receitas e despesas ao longo do tempo
         data_inicio = request.query_params.get('data_inicio')
         data_fim = request.query_params.get('data_fim')
         cliente_id = request.query_params.get('cliente_id')
