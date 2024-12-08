@@ -189,6 +189,35 @@ GestaoFinanceiraNexx/
     - `transacoes/tests.py`: Testes de transações e relatórios
     - `relatorios/tests.py`: Testes específicos de relatórios
   - Cobertura atual: 88%
+  -
+```
+Name                                                                       Stmts   Miss  Cover
+----------------------------------------------------------------------------------------------
+app/__init__.py                                                                0      0   100%
+app/settings.py                                                               20      0   100%
+app/urls.py                                                                   16      0   100%
+app/wsgi.py                                                                    4      4     0%
+clientes/__init__.py                                                           0      0   100%
+clientes/migrations/0001_initial.py                                            6      0   100%
+clientes/migrations/__init__.py                                                0      0   100%
+clientes/models.py                                                            12      1    92%
+clientes/serializers.py                                                        6      0   100%
+clientes/tests.py                                                             41      0   100%
+clientes/views.py                                                             14      1    93%
+manage.py                                                                     12      2    83%
+relatorios/__init__.py                                                         0      0   100%
+relatorios/services.py                                                        24      4    83%
+relatorios/tests.py                                                           32      0   100%
+relatorios/views.py                                                           23      0   100%
+transacoes/migrations/0001_initial.py                                          7      0   100%
+transacoes/migrations/0002_alter_transacao_tipo_alter_transacao_valor.py       6      0   100%
+transacoes/migrations/__init__.py                                              0      0   100%
+transacoes/models.py                                                          19      0   100%
+transacoes/serializers.py                                                      6      0   100%
+transacoes/views.py                                                           36     21    42%
+----------------------------------------------------------------------------------------------
+TOTAL                                                                        284     33    88%
+```
 ### Documentação
 - [x] Presente
   - `README.md`: Instruções de instalação e uso
