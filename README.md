@@ -232,3 +232,69 @@ TOTAL                                                                        284
 - [ ] Adicionar validações específicas por tipo de transação
 - [ ] Melhorar performance com indexação e otimizações
 
+## Testes realizados via terminal para validação do funcionamento da API
+1. Cadastro de cliente:
+```bash
+curl -X POST http://localhost:8000/api/clientes/ \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "João da Silva", "cpf": "12345678901", "email": "joao@exemplo.com"}'
+```
+2. Listagem de clientes:
+```bash
+# Lista básica
+curl http://localhost:8000/api/clientes/
+
+# Com paginação
+curl http://localhost:8000/api/clientes/?page=1
+
+# Filtrar por CPF
+curl http://localhost:8000/api/clientes/?cpf=12345678901
+```
+
+3. Criar transações:
+```bash
+# Criar Receita
+curl -X POST http://localhost:8000/api/transacoes/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cliente": 1,
+    "data_hora": "2024-01-01T10:00:00Z",
+    "valor": 1000.00,
+    "tipo": "receita",
+    "descricao": "Salário",
+    "categoria": "outros"
+  }'
+
+# Criar Despesa
+curl -X POST http://localhost:8000/api/transacoes/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cliente": 1,
+    "data_hora": "2024-01-05T15:00:00Z",
+    "valor": 500.00,
+    "tipo": "despesa",
+    "descricao": "Aluguel",
+    "categoria": "outros"
+  }'
+```
+
+4. Relatórios:
+```bash
+# Relatório Geral
+curl http://localhost:8000/api/transacoes/relatorio_geral/?cliente_id=1
+
+# Evolução Financeira
+curl "http://localhost:8000/api/transacoes/evolucao_financeira/?cliente_cpf=12345678901&data_inicio=2024-01-01&data_fim=2024-12-31&agrupamento=mes"
+```
+
+5. Testes de validação:
+```
+# Tentar criar cliente com CPF duplicado
+curl -X POST http://localhost:8000/api/clientes/ \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Maria Silva", "cpf": "12345678901", "email": "maria@exemplo.com"}'
+
+# Tentar excluir cliente com transações
+curl -X DELETE http://localhost:8000/api/clientes/1/
+```
+
