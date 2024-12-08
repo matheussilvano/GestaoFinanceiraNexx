@@ -189,7 +189,6 @@ GestaoFinanceiraNexx/
     - `transacoes/tests.py`: Testes de transações e relatórios
     - `relatorios/tests.py`: Testes específicos de relatórios
   - Cobertura atual: 88%
-  -
 ```
 Name                                                                       Stmts   Miss  Cover
 ----------------------------------------------------------------------------------------------
