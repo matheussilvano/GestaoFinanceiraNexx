@@ -258,7 +258,7 @@ TOTAL                                                                        284
   - Swagger/OpenAPI: Documentação interativa da API
 ## Próximos Passos
 - [x] Implementar autenticação JWT
-- [ ] Adicionar cache para otimizar relatórios
+- [x] Adicionar cache para otimizar relatórios
 - [ ] Expandir testes para atingir 100% de cobertura
 - [ ] Implementar filtros avançados nas listagens
 - [ ] Adicionar exportação de relatórios em PDF/Excel
