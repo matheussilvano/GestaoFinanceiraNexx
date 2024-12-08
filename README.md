@@ -44,7 +44,8 @@ Sistema backend desenvolvido em Django para gerenciar e consultar dados financei
 
 1. Clone o repositório:
 ```bash
-git clone [URL_DO_SEU_REPOSITORIO]
+```bash
+git clone https://github.com/matheussilvano/GestaoFinanceiraNexx/
 cd GestaoFinanceiraNexx
 ```
 
@@ -69,7 +70,28 @@ docker-compose exec web python manage.py createsuperuser
 
 ## Uso
 
-Após a instalação, você pode acessar:
+### Autenticação JWT
+Antes de usar a API, você precisa obter um token de acesso:
+```bash
+curl -X POST http://localhost:8000/api/token/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "seu_usuario", "password": "sua_senha"}' # Dados utilizados na criação do superusuário
+```
+
+Após a criação do Token, use-o nas requisições:
+```bash
+curl http://localhost:8000/api/clientes/ \
+  -H "Authorization: Bearer seu_token_aqui"
+```
+
+Caso o token não seja usado, retornará um erro:
+```bash
+curl http://localhost:8000/api/clientes/
+
+{"detail":"As credenciais de autenticação não foram fornecidas."}%
+```
+
+### Acesso às interfaces
 
 - API: http://localhost:8000/api/
 - Admin: http://localhost:8000/admin/
@@ -77,6 +99,8 @@ Após a instalação, você pode acessar:
 
 ### Endpoints Principais
 
+- `/api/token/`: Obter tokens JWT
+- `/api/token/refresh/`: Renovar token JWT
 - `/api/clientes/`: CRUD de clientes
 - `/api/transacoes/`: CRUD de transações
 - `/api/transacoes/relatorio_geral/`: Relatório geral de transações
@@ -225,7 +249,7 @@ TOTAL                                                                        284
   - `.env.example`: Configurações de ambiente
   - Swagger/OpenAPI: Documentação interativa da API
 ## Próximos Passos
-- [ ] Implementar autenticação JWT
+- [x] Implementar autenticação JWT
 - [ ] Adicionar cache para otimizar relatórios
 - [ ] Expandir testes para atingir 100% de cobertura
 - [ ] Implementar filtros avançados nas listagens
