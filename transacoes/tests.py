@@ -132,6 +132,51 @@ class TransacaoTests(TestCase):
         data_inicio = create_aware_datetime(2024, 10, 7)
         data_fim = create_aware_datetime(2024, 12, 7, 23, 59, 59)
 
+    def test_evolucao_financeira(self):
+        """Testa endpoint de evolução financeira"""
+        # Cria algumas transações de teste
+        Transacao.objects.create(
+            cliente=self.cliente,
+            data_hora=timezone.now(),
+            valor=1000.00,
+            tipo='receita',
+            descricao='Salário',
+            categoria='outros'
+        )
+        Transacao.objects.create(
+            cliente=self.cliente,
+            data_hora=timezone.now(),
+            valor=-500.00,
+            tipo='despesa',
+            descricao='Aluguel',
+            categoria='outros'
+        )
+
+        # Testa endpoint
+        url = reverse('transacao-evolucao-financeira')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Verifica estrutura da resposta
+        self.assertIn('dados', response.data)
+        self.assertIn('filtros_aplicados', response.data)
+        
+        # Verifica se os dados estão corretos
+        dados = response.data['dados']
+        self.assertTrue(len(dados) > 0)
+        self.assertIn('periodo', dados[0])
+        self.assertIn('receitas', dados[0])
+        self.assertIn('despesas', dados[0])
+        self.assertIn('saldo', dados[0])
+
+        # Testa filtros
+        params = {
+            'cliente_cpf': self.cliente.cpf,
+            'agrupamento': 'dia'
+        }
+        response = self.client.get(url, params)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         # Cria transação antiga
         Transacao.objects.create(
             cliente=self.cliente,
@@ -167,3 +212,4 @@ class TransacaoTests(TestCase):
         }
         response = self.client.get(url, params)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
