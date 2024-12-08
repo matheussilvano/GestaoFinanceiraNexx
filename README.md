@@ -108,8 +108,17 @@ curl http://localhost:8000/api/clientes/
 
 ## Testes
 
-Para executar os testes:
+### Caso queira realizar um teste prático:
+1. Dê permissão de execução do script de testes:
+```bash
+chmod +x test_api.sh
+```
+2. Execute o script:
+```bash
+./test_api.sh
+```
 
+### Para realizar a execução dos testes automatizados:
 ```bash
 # Todos os testes
 docker-compose exec web python manage.py test
