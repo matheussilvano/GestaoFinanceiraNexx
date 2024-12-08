@@ -8,6 +8,8 @@ from django.views.generic import RedirectView
 from clientes.views import ClienteViewSet
 from transacoes.views import TransacaoViewSet
 from relatorios.views import RelatorioViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 # Configuração do Swagger/OpenAPI
 schema_view = get_schema_view(
@@ -31,4 +33,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('docs/', include_docs_urls(title='API de Gestão Financeira')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
