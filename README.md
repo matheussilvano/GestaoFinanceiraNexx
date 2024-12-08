@@ -3,6 +3,8 @@
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=flat-square)
 ![Banco de Dados](https://img.shields.io/badge/Banco%20de%20Dados-PostgreSQL-blue?style=flat-square&logo=postgresql)
 ![Framework](https://img.shields.io/badge/Framework-Django-green?style=flat-square&logo=django)
+![Cobertura de Testes](https://img.shields.io/badge/coverage-88%25-brightgreen?style=flat-square&logo=pytest)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=flat-square&logo=docker)
 
 ## Descrição do Projeto
 Sistema backend para gerenciamento de dados financeiros de clientes, com funcionalidades completas de CRUD, geração de relatórios e análises gráficas.
