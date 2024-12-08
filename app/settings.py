@@ -12,8 +12,8 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',  # Adicione se não existir
-    'django.contrib.staticfiles',  # Adicione se não existir
+    'django.contrib.messages', 
+    'django.contrib.staticfiles', 
     'rest_framework',
     'drf_yasg',
     'clientes',
