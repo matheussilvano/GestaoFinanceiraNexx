@@ -110,7 +110,7 @@ curl http://localhost:8000/api/clientes/
 ### Caso queira realizar um teste prático:
 1. Dê permissão de execução do script de testes:
 ```bash
-chmod +x test_api.sh
+chmod +x testar_api.sh
 ```
 2. Execute o script:
 ```bash
