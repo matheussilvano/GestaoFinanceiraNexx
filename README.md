@@ -114,7 +114,7 @@ chmod +x testar_api.sh
 ```
 2. Execute o script:
 ```bash
-./test_api.sh
+./testar_api.sh
 ```
 
 ### Para realizar a execução dos testes automatizados:
