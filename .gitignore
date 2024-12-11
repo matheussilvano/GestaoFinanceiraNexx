@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+.coverage
+*.log
+*.bak
+.idea/
+.vscode/
+.pytest_cache/
+db.sqlite3
+/migrations/*
+!/migrations/__init__.py
