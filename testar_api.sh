@@ -11,7 +11,7 @@ echo "=== Iniciando teste da API ==="
 echo -e "\n${GREEN}1. Obtendo token JWT${NC}"
 TOKEN_RESPONSE=$(curl -s -X POST http://localhost:8000/api/token/ \
   -H "Content-Type: application/json" \
-  -d '{"username": "silvano", "password": "12345"}')
+  -d '{"username": "silvano", "password": "123456"}')
 
 ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | grep -o '"access":"[^"]*' | grep -o '[^"]*$')
 
