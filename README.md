@@ -59,6 +59,8 @@ docker-compose up -d
 
 3. Execute as migrações do banco de dados:
 ```bash
+docker-compose exec web python manage.py makemigrations
+
 docker-compose exec web python manage.py migrate
 ```
 
