@@ -18,6 +18,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=db
+      - PYTHONPATH=/code
 
   db:
     image: postgres:13

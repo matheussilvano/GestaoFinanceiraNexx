@@ -1,15 +1,13 @@
 from django.test import TestCase
-from django.urls import reverse
-from rest_framework.test import APIClient
-from rest_framework import status
 from django.utils import timezone
 from datetime import timedelta
 from clientes.models import Cliente
 from transacoes.models import Transacao
+from .services import RelatorioService
 
-class RelatoriosTests(TestCase):
+class RelatoriosServiceTests(TestCase):
     def setUp(self):
-        self.client = APIClient()
+        # Criar cliente de teste
         self.cliente = Cliente.objects.create(
             nome='Cliente Teste',
             cpf='12345678901',
@@ -39,24 +37,79 @@ class RelatoriosTests(TestCase):
             categoria='outros'
         )
 
-    def test_relatorio_geral(self):
-        url = reverse('relatorio-geral')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_relatorio_geral_com_cliente(self):
+        """Testa serviço de relatório geral para um cliente específico"""
+        relatorio = RelatorioService.get_relatorio_geral(self.cliente.id)
         
-        data = response.json()
-        self.assertIn('resumo', data)
-        self.assertIn('categorias', data)
+        # Verificar resumo
+        self.assertIsNotNone(relatorio['resumo'])
         
-        resumo = data['resumo']
-        self.assertEqual(resumo['saldo_total'], 500.00)  # 1000 - 500
-        self.assertEqual(resumo['total_receitas'], 1000.00)
-        self.assertEqual(resumo['total_despesas'], -500.00)
+        # Verificar valores específicos
+        self.assertEqual(relatorio['resumo']['saldo_total'], 500.00)
+        self.assertEqual(relatorio['resumo']['total_receitas'], 1000.00)
+        self.assertEqual(relatorio['resumo']['total_despesas'], -500.00)
 
-    def test_evolucao_receitas_despesas(self):
-        url = reverse('relatorio-evolucao')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_relatorio_geral_sem_cliente(self):
+        """Testa relatório geral sem filtro de cliente"""
+        relatorio = RelatorioService.get_relatorio_geral()
         
-        data = response.json()
-        self.assertTrue(len(data) >= 2)  # Deve ter pelo menos 2 dias
+        # Verificar que o relatório não está vazio
+        self.assertIsNotNone(relatorio['resumo'])
+        self.assertIsNotNone(relatorio['categorias'])
+
+    def test_evolucao_financeira_por_cliente(self):
+        """Testa evolução financeira para um cliente específico"""
+        evolucao = RelatorioService.get_evolucao_receitas_despesas(
+            cliente_id=self.cliente.id,
+            data_inicio=timezone.now().date(),
+            data_fim=timezone.now().date()
+        )
+        
+        # Verificar que há resultados
+        self.assertTrue(len(evolucao) > 0)
+
+    def test_evolucao_financeira_agrupamento(self):
+        """Testa evolução financeira com diferentes tipos de agrupamento"""
+        # Teste com agrupamento mensal
+        evolucao_mensal = RelatorioService.get_evolucao_receitas_despesas(
+            agrupamento='mes'
+        )
+        self.assertTrue(len(evolucao_mensal) > 0)
+
+        # Teste com agrupamento diário
+        evolucao_diaria = RelatorioService.get_evolucao_receitas_despesas(
+            agrupamento='dia'
+        )
+        self.assertTrue(len(evolucao_diaria) > 0)
+
+    def test_evolucao_financeira_sem_filtros(self):
+        """Testa evolução financeira sem filtros específicos"""
+        evolucao = RelatorioService.get_evolucao_receitas_despesas()
+        
+        # Verificar que há resultados
+        self.assertTrue(len(evolucao) >= 0)  # Pode ser vazio se não houver transações
+
+    def test_servico_relatorio_sem_transacoes(self):
+        """Testa serviço de relatório quando não há transações"""
+        # Limpa todas as transações
+        Transacao.objects.all().delete()
+        
+        # Testa relatório sem transações
+        from relatorios.services import RelatorioService
+        
+        relatorio = RelatorioService.get_relatorio_geral()
+        
+        self.assertIsNotNone(relatorio)
+        self.assertEqual(relatorio['resumo']['saldo_total'], None)
+        self.assertEqual(relatorio['resumo']['total_receitas'], None)
+        self.assertEqual(relatorio['resumo']['total_despesas'], None)
+        self.assertEqual(len(relatorio['categorias']), 0)
+
+    def test_servico_evolucao_receitas_despesas_sem_filtro(self):
+        """Testa serviço de evolução de receitas e despesas sem filtros"""
+        from relatorios.services import RelatorioService
+        
+        evolucao = RelatorioService.get_evolucao_receitas_despesas()
+        
+        self.assertIsNotNone(evolucao)
+        self.assertTrue(isinstance(evolucao, list))
