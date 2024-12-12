@@ -1,6 +1,6 @@
 # Sistema de Gestão de Transações Financeiras
 ![Linguagem](https://img.shields.io/badge/Linguagem-Python-blue?style=flat-square&logo=python)
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Concluido-green?style=flat-square)
 ![Banco de Dados](https://img.shields.io/badge/Banco%20de%20Dados-PostgreSQL-blue?style=flat-square&logo=postgresql)
 ![Framework](https://img.shields.io/badge/Framework-Django-green?style=flat-square&logo=django)
 ![Cobertura de Testes](https://img.shields.io/badge/coverage-88%25-brightgreen?style=flat-square&logo=pytest)
@@ -60,13 +60,32 @@ docker-compose up -d
 3. Execute as migrações do banco de dados:
 ```bash
 docker-compose exec web python manage.py makemigrations
-
 docker-compose exec web python manage.py migrate
 ```
 
 4. Crie um superusuário:
 ```bash
 docker-compose exec web python manage.py createsuperuser
+```
+
+## Testes
+```bash
+# Todos os testes
+docker-compose exec web python -m pytest
+
+# Cobertura de testes
+docker-compose exec web coverage run -m pytest
+docker-compose exec web coverage report
+```
+
+### Caso queira realizar um teste prático:
+1. Dê permissão de execução do script de testes:
+```bash
+chmod +x testar_api.sh
+```
+2. Execute o script:
+```bash
+./testar_api.sh
 ```
 
 ## Uso
@@ -85,13 +104,6 @@ curl http://localhost:8000/api/clientes/ \
   -H "Authorization: Bearer seu_token_aqui"
 ```
 
-Caso o token não seja usado, retornará um erro:
-```bash
-curl http://localhost:8000/api/clientes/
-
-{"detail":"As credenciais de autenticação não foram fornecidas."}%
-```
-
 ### Acesso às interfaces
 
 - API: http://localhost:8000/api/
@@ -107,32 +119,6 @@ curl http://localhost:8000/api/clientes/
 - `/api/transacoes/relatorio_geral/`: Relatório geral de transações
 - `/api/transacoes/evolucao_receitas_despesas/`: Evolução de receitas e despesas
 
-## Testes
-
-### Caso queira realizar um teste prático:
-1. Dê permissão de execução do script de testes:
-```bash
-chmod +x testar_api.sh
-```
-2. Execute o script:
-```bash
-./testar_api.sh
-```
-
-### Para realizar a execução dos testes automatizados:
-```bash
-# Todos os testes
-docker-compose exec web python manage.py test
-
-# Testes específicos
-docker-compose exec web python manage.py test clientes.tests
-docker-compose exec web python manage.py test transacoes.tests
-docker-compose exec web python manage.py test relatorios.tests
-
-# Cobertura de testes
-docker-compose exec web coverage run --source='.' manage.py test
-docker-compose exec web coverage report
-```
 
 ## Comandos Úteis
 
@@ -261,12 +247,6 @@ TOTAL                                                                        284
 ## Próximos Passos
 - [x] Implementar autenticação JWT
 - [x] Adicionar cache para otimizar relatórios
-- [ ] Expandir testes para atingir 100% de cobertura
-- [ ] Implementar filtros avançados nas listagens
-- [ ] Adicionar exportação de relatórios em PDF/Excel
-- [ ] Implementar histórico de alterações (audit trail)
-- [ ] Adicionar validações específicas por tipo de transação
-- [ ] Melhorar performance com indexação e otimizações
 
 ## Testes realizados via terminal para validação do funcionamento da API
 1. Cadastro de cliente:
