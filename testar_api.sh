@@ -7,11 +7,16 @@ NC='\033[0m'
 
 echo "=== Iniciando teste da API ==="
 
+# Solicita usuário e senha
+read -p "Digite o usuário: " USERNAME
+read -s -p "Digite a senha: " PASSWORD
+echo ""
+
 # 1. Obtém o token JWT
 echo -e "\n${GREEN}1. Obtendo token JWT${NC}"
 TOKEN_RESPONSE=$(curl -s -X POST http://localhost:8000/api/token/ \
   -H "Content-Type: application/json" \
-  -d '{"username": "silvano", "password": "123456"}')
+  -d "{\"username\": \"$USERNAME\", \"password\": \"$PASSWORD\"}")
 
 ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | grep -o '"access":"[^"]*' | grep -o '[^"]*$')
 
